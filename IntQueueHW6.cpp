@@ -1,6 +1,7 @@
 #include <iostream>
 #include "IntQueueHW6.h"
 using namespace std;
+/* This code is provided by the instructor*/
 
 //*****************************************
 // Constructor - creates an empty queue   *
