@@ -52,18 +52,16 @@ void tryToDeque(IntQueueHW6 &queue, Player &player, vector<int> & order, struct 
     Mutex.lock();                   //locks the mutex
     if(!queue.isEmpty())            //if there are still elements
     {
-        //player.chair = true;
         int dummy;                  //dummy variable for .dequeue() to work
         queue.dequeue(dummy);           //dequeues an element
-        int ID = player.id;
-        cout << "Player " << ID << " captured a chair at " <<  put_time(ptm,"%X") << endl;
-        order.push_back(ID);                         //stores the order of each player
+        cout << "Player " << player.id << " captured a chair at " <<  put_time(ptm,"%X") << "." << endl;
+        order.push_back(player.id);                         //stores the order of each player
         Mutex.unlock();             //unlocks the mutex for other threads
     }
     else                            //fails to dequeue
     {
         player.chair= false;           //sets variable as false because the player will be eliminated
-        cout << "Player " << player.id << " could not capture a chair." << endl;
+        cout << "Player " << player.id << " couldn't capture a chair." << endl;
         Mutex.unlock();             //unlocks the mutex for other threads
     }
 }
@@ -79,24 +77,23 @@ void PrintOrder(const vector<int> & order)
     cout << endl << endl;
 }
 
-
-
-
-
 int main() {
+    /*welcome message*/
     cout << "Welcome to Musical Chairs game!\nEnter the number of players in the game:\n";
     int numberOfPlayers;
     cin >> numberOfPlayers;
+    cout << "Game Start!\n\n";
+
     /*creating a vector to store the players*/
     vector<Player> players = createVector(numberOfPlayers);
 
     int winnerID= -1;           //dummy value, it will be updated in the loop
 
-    while (numberOfPlayers != 1)            //game loop
+    while (numberOfPlayers > 1)            //game loop
     {
         time_t tt = chrono::system_clock::to_time_t (chrono::system_clock::now());  //gets the current time
         struct tm *ptm = localtime(&tt);
-        cout << "Race will start at " << put_time(ptm,"%X") << endl;
+        cout << "Time is now " << put_time(ptm,"%X") << endl;
         if (ptm->tm_sec >57)            //caution against seconds overflow
         {
             if (ptm->tm_min == 59)           //caution against minutes overflow
@@ -108,8 +105,7 @@ int main() {
             {
                 ptm->tm_min++;
             }
-
-            ptm->tm_sec= 0;
+            ptm->tm_sec = (ptm->tm_sec + 2) %60;
         }
         else
         {
