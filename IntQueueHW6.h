@@ -1,5 +1,6 @@
 #ifndef INTQUEUEHW6_H
 #define INTQUEUEHW6_H
+/*This code is provided by the instructor*/
 
 class IntQueueHW6
 {
